@@ -1,0 +1,225 @@
+<html>
+<head>
+<title>Word Find</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.2/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+<link rel="stylesheet" media="all" href="challenge.css" />
+</head>
+<body>
+	<div id="app" class="container">
+		<h1 class="text-center">Lenda Word Find</h1>
+		<hr />
+		<div class="row">
+			<div class="col-sm-2 col-sm-offset-1">
+				<p class="lead">Instructions</p>
+				<ul>
+					<li>Enter the API endpoint of your service in the text box and click button to start a new game</li>
+					<li>Click on a letter tile to add it to the current word, click again to remove</li>
+					<li>Submitting the word will invoke the appropriate POST API</li>
+					<li>Note the game ID is stored in the location hash.  Start a couple games, then pressing the browser back button will invoke the GET API to reload the prior game</li>
+				</ul>
+			</div>
+			<div class="col-sm-8" id="game">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="panel-title">
+							<form style="margin-bottom: 0;" id="new-game"
+								action="/api/v1/game" accept-charset="UTF-8" method="post">
+								<div class="row">
+									<div class="col-sm-3">
+										<label class="control-label" for="game_api_endpoint">API endpoint</label>
+									</div>
+									<div class="col-sm-6">
+										<input type="text" name="game_api_endpoint"
+											id="game_api_endpoint"
+											v-model="endpoint"
+											class="form-control" placeholder="API to your backend code" />
+									</div>
+									<div class="col-sm-3">
+										<input type="submit" name="commit" value="Start a new game"
+											class="btn btn-default btn-block" @click.prevent="startGame"/>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-7">
+								<div class="board">
+									<template v-for="(row, y) in game.board">
+										<template v-for="(letter, x) in split(row)">
+											<div class="tile" :class="{ active: selected[x*5+y] }"  @click.prevent="click(x,y,quefy(letter))">{{ quefy(letter) }}</div>
+										</template>
+									</template>
+								</div>
+								<div class="text-center">
+									<h2>Current Word</h2>
+									<div class="current-word" :style="{color: currentColor}">{{currentWord}}</div>
+									<form id="submit-word" action="/api/v1/game/1"
+										accept-charset="UTF-8" method="post">
+										<input v-if="!submitting" type="submit" name="commit" value="Submit Word"
+											@click.prevent="submit"
+											class="btn btn-primary btn-lg" />
+										<span v-else class="message">{{message}}</span>
+									</form>
+								</div>
+							</div>
+							<div class="col-sm-5">
+								<div class="score">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>Word</th>
+												<th class="text-right">Score</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="word in game.words">
+												<td>{{word.word}}</td>
+												<td class="text-right">{{word.score}}</td>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr class="active">
+												<th>Total</th>
+												<th class="text-right">{{totalscore}}</th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+	vue = new Vue({
+		el: '#app',
+		data: {
+			endpoint: 'https://lenda-wordfind.herokuapp.com/api/v1/game',
+			game: {
+				board: [ "     ", "     ", "     ", "     ", "     " ]
+			},
+			currentWord: '',
+			currentColor: null,
+			selected: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+			selectedPos: [],
+			submitting: false,
+			message: ''
+		},
+		computed: {
+			totalscore: function() {
+				var score = 0;
+				for (var i in this.game.words) {
+					score += this.game.words[i].score;
+				}
+				return score;
+			}
+		},
+		methods: {
+			resetWord: function() {
+				var self = this;
+				self.currentWord = '';
+				self.currentColor = null;
+				for (var i in self.selected)
+					self.selected.splice(i, 1, 0);
+			},
+			setGame: function(response) {
+				console.log(response);
+				this.game = response.data;
+				var baselocation = location.hash == '' ? location.href : location.href.substring(0, location.href.indexOf('#'));
+				history.pushState({ id: this.game.id }, null, baselocation+'#'+this.game.id);
+				this.resetWord();				
+			},
+			startGame: function(e) {
+				console.log(this.endpoint);
+				axios.post(this.endpoint)
+				 .then(this.setGame.bind(this))
+				 .catch(function(error) {
+					 console.log(error);
+				 });
+			},
+			restoreGame: function(e) {
+				console.log(e);
+				var id = e.state != null ? e.state.id : (location.hash.length > 1 ? location.hash.substring(1) : -1);
+				if (id == -1)
+					return;
+				axios.get(this.endpoint+'/'+id)
+				 .then(this.setGame.bind(this))
+				 .catch(function(error) {
+					 console.log(error);
+				 });
+			},
+			split: function(row) {
+				return row.split('');
+			},
+			quefy: function(letter) {
+				return letter == "Q" ? "Qu" : letter;
+			},
+			click: function(x,y,letter) {
+				console.log(x,y);
+				var active = this.selected[x*5+y];
+				if (active) {
+					// only turn this off if this is the last one selected
+					var lastPos = this.selectedPos.pop();
+					if (lastPos[0] == x && lastPos[1] == y) {
+						this.selected.splice(x*5+y, 1, 0);
+						this.currentWord = this.currentWord.substring(0, this.currentWord.length - 1);						
+					} else {
+						this.selectedPos.push(lastPos);
+					}
+				}
+				else {
+					this.selected.splice(x*5+y, 1, 1);
+					this.currentWord += letter;
+					this.selectedPos.push([x,y]);
+				}
+			},
+			submit: function() {
+				var self = this;
+				self.submitting = true;
+				self.message = '';
+				axios.post(self.endpoint+'/'+self.game.id, { word: self.currentWord })
+				 .then(function(response) {
+					 console.log(response);
+					 self.game.words.push(response.data);
+					 self.currentColor = 'green';
+					 self.message = response.data.score + ' point' + (response.data.score == 1 ? '' : 's') + '!';
+					 setTimeout(function() {
+						 self.submitting = false;						 
+						 self.resetWord();
+					 }, 1000);
+				 })
+				 .catch(function(error) {
+					 if (error.response) {
+						 console.log(error.response);
+						 if (error.response.status == "400")
+							 self.message = "Letters must be adjacent horizontally or vertically";
+						 else if (error.response.status == "404")
+							 self.message = "This game is missing from the server";
+						 else if (error.response.status == "406")
+							 self.message = "Not a word in the dictionary";
+						 else if (error.response.status == "409")
+							 self.message = "Word has already been played";
+						 else 
+							 self.message = "Unknown Server Error";
+					 } else {
+						 console.log(error);
+						 self.message = "Unknown Error";
+					 }
+					 self.currentColor = 'red';
+					 setTimeout(function() {
+							self.submitting = false;
+						self.resetWord();
+					 }, 2000);
+				 });				
+			}
+		}
+	});
+	window.addEventListener("popstate", vue.restoreGame.bind(vue));
+	</script>
+</body>
+</html>

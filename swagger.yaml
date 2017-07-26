@@ -1,0 +1,146 @@
+swagger: '2.0'
+info:
+  description: Lenda
+  version: 1.0.0
+  title: Lenda Back-end Challenge API
+  termsOfService: 'https://www.lenda.com/terms_of_use'
+  contact:
+    email: devteam@lenda.com
+host: localhost
+basePath: /api/v1
+tags:
+  - name: application
+    description: Everything about your Application
+schemes:
+  - http
+paths:
+  /game:
+    post:
+      tags:
+        - game
+      summary: Create a new game
+      description: >-
+        Returns a new game with new unique ID and a board randomly scrambled
+        according to the rules, with an empty list of words
+      operationId: create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Game'
+  '/game/{game_id}':
+    get:
+      tags:
+        - game
+      summary: Get a game by ID
+      description: >-
+        Returns a single game with that ID, including the list of words played
+        in the game and associated scores
+      operationId: show
+      produces:
+        - application/json
+      parameters:
+        - name: game_id
+          in: path
+          description: ID of game to return
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Game'
+        '404':
+          description: Game not found
+    post:
+      tags:
+        - game
+      summary: Submit a word to the game
+      description: >-
+        Accepts a word played and validates that it is a dictionary word and a
+        valid play on the board according to the rules, and returns the score if
+        valid, otherwise will error out
+      operationId: update
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: game_id
+          in: path
+          description: ID of game to return
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: body
+          description: Word being played (score will be ignored on input)
+          required: true
+          schema:
+            $ref: '#/definitions/Word'
+      responses:
+        '200':
+          description: >-
+            word is a valid play and in the dictionary, response will contain
+            score
+          schema:
+            $ref: '#/definitions/Word'
+        '400':
+          description: Word is not playable on this game board
+        '404':
+          description: Game not found
+        '406':
+          description: Word is not in the dictionary
+        '409':
+          description: Word is a duplicate
+definitions:
+  Word:
+    type: object
+    properties:
+      word:
+        type: string
+      score:
+        type: integer
+        description: 'ignored on input, set by the POST API'
+    example:
+      word: crane
+      score: 3
+  Game:
+    type: object
+    properties:
+      id:
+        type: integer
+      board:
+        description: array of rows on the board
+        type: array
+        items:
+          type: string
+      score:
+        type: integer
+      words:
+        description: list of words already played
+        type: array
+        items:
+          $ref: '#/definitions/Word'
+    example:
+      id: 5
+      board:
+        - DOIFQ
+        - OGELD
+        - VLREN
+        - CRANN
+        - HOJPY
+      score: 4
+      words:
+        - word: crane
+          score: 3
+        - word: dog
+          score: 1
+externalDocs:
+  description: Find out more about Lenda
+  url: 'https://www.lenda.com'
