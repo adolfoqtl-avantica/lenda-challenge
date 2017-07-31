@@ -1,39 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="835f178a-ec5a-4a99-adcf-4337a03f1e30" name="Default" comment="" />
-    <list id="84c6319a-8c91-492b-9869-00d45dd44105" name="DB support" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_hibernate_envers_5_0_11_Final.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mongodb_bson_3_4_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mongodb_mongodb_driver_3_4_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mongodb_mongodb_driver_core_3_4_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_data_spring_data_mongodb_1_10_0_RELEASE.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/model/package-info.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/repository/postgres/GameRepository.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/spring/EntityBase.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/db/migration/V002__GameWord.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/resources/application.properties" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_atomikos_atomikos_util_3_9_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_atomikos_transactions_3_9_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_atomikos_transactions_api_3_9_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_atomikos_transactions_jdbc_3_9_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_atomikos_transactions_jms_3_9_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_atomikos_transactions_jta_3_9_3.xml" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_jta_atomikos_1_5_1_RELEASE.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_data_mongodb_1_5_1_RELEASE.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/test/java/com/lenda/challenge/core/BackEndIntegrationTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/lenda/challenge/spring/BackEndIntegrationTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/challenge_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/challenge_war_exploded.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="835f178a-ec5a-4a99-adcf-4337a03f1e30" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/challenge.iml" afterPath="$PROJECT_DIR$/challenge.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/Application.java" afterPath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/Application.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/controller/Games.java" afterPath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/controller/Games.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/model/Game.java" afterPath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/model/Game.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/model/Word.java" afterPath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/model/Word.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/service/GameService.java" afterPath="$PROJECT_DIR$/src/main/java/com/lenda/challenge/service/GameService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.properties" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/lenda/challenge/integration/GameIntegrationTest.java" afterPath="$PROJECT_DIR$/src/test/java/com/lenda/challenge/integration/GameIntegrationTest.java" />
     </list>
     <ignored path="challenge.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1032,7 +1001,7 @@
     <task active="true" id="Default" summary="Default task">
       <changelist id="835f178a-ec5a-4a99-adcf-4337a03f1e30" name="Default" comment="" />
       <changelist id="" name="Fixes and Tests" comment="" />
-      <changelist id="84c6319a-8c91-492b-9869-00d45dd44105" name="DB support" comment="" />
+      <changelist id="" name="DB support" comment="" />
       <created>1501089502239</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -1040,12 +1009,20 @@
       <workItem from="1501089503490" duration="3210000" />
       <workItem from="1501171489058" duration="11066000" />
       <workItem from="1501513598376" duration="195000" />
-      <workItem from="1501520293221" duration="10473000" />
+      <workItem from="1501520293221" duration="10492000" />
     </task>
+    <task id="LOCAL-00001" summary="DB support">
+      <created>1501538198716</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1501538198716</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24944000" />
+    <option name="totallyTimeSpent" value="24963000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="53" y="-4" width="1867" height="1084" extended-state="6" />
@@ -1126,6 +1103,8 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="DB support" />
+    <option name="LAST_COMMIT_MESSAGE" value="DB support" />
     <option name="PRESELECT_EXISTING_CHANGELIST" value="false" />
   </component>
   <component name="XDebuggerManager">
