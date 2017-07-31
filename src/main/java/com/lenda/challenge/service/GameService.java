@@ -7,11 +7,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,21 +23,17 @@ public class GameService {
 	protected HashMap<Integer, Game> games = new HashMap<>();
 	protected HashSet<String> dictionary = new HashSet<>();
 
-	@PostConstruct
-	protected void loadDictionary() {
+	public void loadDictionary() {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("dictionary.txt"));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+			        this.getClass().getClassLoader().getResourceAsStream("data/dictionary.txt")));
 			String line;
 			while ((line = reader.readLine()) != null) {
 				dictionary.add(line);
 			}
 			reader.close();
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			log.error("dictionary.txt not found", e);
-			System.exit(1);
-		} catch (IOException e) {
-			log.error("I/O error reading dictionary.txt",e);
-			System.exit(1);
 		}
 	}
 	

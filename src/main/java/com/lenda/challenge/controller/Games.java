@@ -5,26 +5,26 @@ import com.lenda.challenge.model.Word;
 import com.lenda.challenge.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/game")
 @RestController
+@RequestMapping("/api/v1")
 public class Games {
 
 	@Autowired
 	private GameService gameService;
 
-	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/game", method = RequestMethod.POST)
 	public Game create() {
 		return gameService.create();
 	}	
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/game/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Game> show(@PathVariable("id") Integer id) {
 		Game game = gameService.get(id);
 		if (game == null) {
@@ -33,8 +33,8 @@ public class Games {
 		return new ResponseEntity<>(game, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Word> update(@PathVariable("id") Integer id, Word word) {
+	@RequestMapping(value = "/game/{id}", method = RequestMethod.POST)
+	public ResponseEntity<Word> update(@PathVariable("id") Integer id, @RequestBody Word word) {
 		Game game = gameService.get(id);
 		if (game == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

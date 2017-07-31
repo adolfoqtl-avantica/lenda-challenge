@@ -50,11 +50,12 @@ public class Game {
 		this.id = id;
 		this.board = Lists.newArrayList();
 		this.words = Lists.newArrayList();
+		this.score = 0;
 		scrambleBoard();
 	}
 
 	private void scrambleBoard() {
-		List<String> dice = Arrays.asList(DICE_TEMPLATE);
+		List<String> dice = Lists.newArrayList(Arrays.asList(DICE_TEMPLATE));
 		Random r = new Random();
 		StringBuilder row;
 		for (int i = 0; i < 5; i++) {
