@@ -2,14 +2,25 @@ package com.lenda.challenge.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
+import com.lenda.challenge.spring.EntityBase;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.envers.Audited;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Game {
+@Entity
+@Audited
+public class Game extends EntityBase {
 
 	@JsonIgnore
 	private static String[] DICE_TEMPLATE = new String[] {
@@ -40,14 +51,12 @@ public class Game {
 			"ooottu"
 	};
 
-	private Integer id;
 	private Integer score;
 	private List<String> board;
 	private List<Word> words;
 	private OffsetDateTime lastPlay;
 
-	public Game(int id) {
-		this.id = id;
+	public Game() {
 		this.board = Lists.newArrayList();
 		this.words = Lists.newArrayList();
 		this.score = 0;
@@ -75,52 +84,7 @@ public class Game {
 		}
 		return false;
 	}
-	
-	protected class Position {
-		int x, y;
-		Position prev;
-		
-		public Position(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-		
-		public Position(int x, int y, Position prev) {
-			this(x,y);
-			this.prev = prev;
-		}
 
-		public boolean valid() {
-			return x >= 0 && x < 5 && y >= 0 && y < 5;
-		}
-		
-		public boolean nonoverlapping() {
-			for (Position p = prev; p != null; p = p.prev) {
-				if (p.x == x && p.y == y)
-					return false;
-			}
-			return true;
-		}
-		
-		public char charAt() {
-			return Game.this.board.get(y).charAt(x);
-		}
-		
-		public List<Position> findPaths(char c) {
-			ArrayList<Position> paths = new ArrayList<>();
-			Position[] orthogonals = new Position[] {
-				new Position(x-1, y, this),
-				new Position(x+1, y, this),
-				new Position(x, y-1, this),
-				new Position(x, y+1, this),
-			};
-			for (Position p: orthogonals)
-				if (p.valid() && p.nonoverlapping() && p.charAt() == c)
-					paths.add(p);
-			return paths;
-		}
-	}
-	
 	public boolean checkValidPlay(String word) {
 		word = word.toUpperCase().replaceAll("QU", "Q");
 		ArrayList<Position> paths = new ArrayList<>();
@@ -157,14 +121,6 @@ public class Game {
 		lastPlay = OffsetDateTime.now();
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public Integer getScore() {
 		return score;
 	}
@@ -173,6 +129,7 @@ public class Game {
 		this.score = score;
 	}
 
+	@Transient
 	public List<String> getBoard() {
 		return board;
 	}
@@ -181,6 +138,9 @@ public class Game {
 		this.board = board;
 	}
 
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
+	@Fetch(FetchMode.JOIN)
+	@Audited
 	public List<Word> getWords() {
 		return words;
 	}
@@ -195,5 +155,50 @@ public class Game {
 
 	public void setLastPlay(OffsetDateTime lastPlay) {
 		this.lastPlay = lastPlay;
+	}
+
+	private class Position {
+		int x, y;
+		Position prev;
+
+		Position(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		Position(int x, int y, Position prev) {
+			this(x,y);
+			this.prev = prev;
+		}
+
+		boolean valid() {
+			return x >= 0 && x < 5 && y >= 0 && y < 5;
+		}
+
+		boolean nonoverlapping() {
+			for (Position p = prev; p != null; p = p.prev) {
+				if (p.x == x && p.y == y)
+					return false;
+			}
+			return true;
+		}
+
+		char charAt() {
+			return Game.this.board.get(y).charAt(x);
+		}
+
+		List<Position> findPaths(char c) {
+			ArrayList<Position> paths = new ArrayList<>();
+			Position[] orthogonals = new Position[] {
+					new Position(x-1, y, this),
+					new Position(x+1, y, this),
+					new Position(x, y-1, this),
+					new Position(x, y+1, this),
+			};
+			for (Position p: orthogonals)
+				if (p.valid() && p.nonoverlapping() && p.charAt() == c)
+					paths.add(p);
+			return paths;
+		}
 	}
 }

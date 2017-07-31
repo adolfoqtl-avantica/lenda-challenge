@@ -9,12 +9,18 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Spring Boot Application.
  */
 @SpringBootApplication
+@EnableJpaRepositories(basePackages = "com.lenda.challenge.repository.postgres")
+@EnableJpaAuditing
+@EnableMongoRepositories(basePackages = "com.lenda.challenge.repository.mongo")
 @EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
 @EnableEncryptableProperties
 @EnableAspectJAutoProxy(proxyTargetClass = true)

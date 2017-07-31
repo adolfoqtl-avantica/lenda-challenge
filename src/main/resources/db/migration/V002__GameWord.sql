@@ -1,0 +1,23 @@
+CREATE TABLE Game (
+  id BIGSERIAL NOT NULL,
+  score INTEGER NULL,
+  lastPlay TIMESTAMP NOT NULL,
+  createdBy VARCHAR(80) NULL,
+  createdDate TIMESTAMP NULL,
+  modifiedBy VARCHAR(80) NULL,
+  modifiedDate TIMESTAMP NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE Word (
+  id BIGSERIAL NOT NULL,
+  game_Id BIGINT NOT NULL,
+  word VARCHAR(25) NULL,
+  score INTEGER NULL,
+  createdBy VARCHAR(80) NULL,
+  createdDate TIMESTAMP NULL,
+  modifiedBy VARCHAR(80) NULL,
+  modifiedDate TIMESTAMP NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_Word_Game FOREIGN KEY (game_Id) REFERENCES Game (id) ON UPDATE CASCADE ON DELETE CASCADE
+);

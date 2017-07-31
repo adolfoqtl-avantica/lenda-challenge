@@ -25,7 +25,7 @@ public class Games {
 	}	
 	
 	@RequestMapping(value = "/game/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Game> show(@PathVariable("id") Integer id) {
+	public ResponseEntity<Game> show(@PathVariable("id") Long id) {
 		Game game = gameService.get(id);
 		if (game == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -34,7 +34,7 @@ public class Games {
 	}
 	
 	@RequestMapping(value = "/game/{id}", method = RequestMethod.POST)
-	public ResponseEntity<Word> update(@PathVariable("id") Integer id, @RequestBody Word word) {
+	public ResponseEntity<Word> update(@PathVariable("id") Long id, @RequestBody Word word) {
 		Game game = gameService.get(id);
 		if (game == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

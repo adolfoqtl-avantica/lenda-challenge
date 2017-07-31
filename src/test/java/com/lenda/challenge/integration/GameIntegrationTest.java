@@ -1,6 +1,6 @@
 package com.lenda.challenge.integration;
 
-import com.lenda.challenge.core.BackEndIntegrationTest;
+import com.lenda.challenge.spring.BackEndIntegrationTest;
 import com.lenda.challenge.service.GameService;
 import org.flywaydb.test.annotation.FlywayTest;
 import org.junit.Before;

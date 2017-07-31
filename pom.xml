@@ -32,6 +32,7 @@
         <commons-lang3.version>3.5</commons-lang3.version>
         <threeten-extra.version>1.0</threeten-extra.version>
         <hibernate-java8.version>5.0.11.Final</hibernate-java8.version>
+        <hibernate-envers.version>5.0.11.Final</hibernate-envers.version>
         <flyway-core.version>4.0.3</flyway-core.version>
         <jasypt.version>1.9.2</jasypt.version>
         <bouncycastle.version>1.55</bouncycastle.version>
@@ -83,7 +84,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jta-atomikos</artifactId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -154,6 +155,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-java8</artifactId>
             <version>${hibernate-java8.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
+            <version>${hibernate-envers.version}</version>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>

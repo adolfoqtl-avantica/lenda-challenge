@@ -1,4 +1,4 @@
-package com.lenda.challenge.core;
+package com.lenda.challenge.spring;
 
 import org.flywaydb.test.junit.FlywayTestExecutionListener;
 import org.springframework.boot.test.context.SpringBootTest;
