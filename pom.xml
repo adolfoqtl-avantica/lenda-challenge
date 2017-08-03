@@ -39,6 +39,7 @@
         <jasypt-spring-boot-starter.version>1.9</jasypt-spring-boot-starter.version>
         <aspectj-maven-plugin.version>1.8</aspectj-maven-plugin.version>
         <aspectj.version>1.8.7</aspectj.version>
+        <jrubyparser.version>0.5.3</jrubyparser.version>
 
         <h2.version>1.4.193</h2.version>
         <mockito-java8.version>0.3.1</mockito-java8.version>
@@ -188,6 +189,11 @@
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
             <version>${jasypt-spring-boot-starter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jrubyparser</artifactId>
+            <version>${jrubyparser.version}</version>
         </dependency>
 
 

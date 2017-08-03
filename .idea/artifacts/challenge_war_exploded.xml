@@ -98,6 +98,7 @@
           <element id="library" level="project" name="Maven: org.bouncycastle:bcprov-jdk15on:1.55" />
           <element id="library" level="project" name="Maven: com.github.ulisesbocchio:jasypt-spring-boot-starter:1.9" />
           <element id="library" level="project" name="Maven: com.github.ulisesbocchio:jasypt-spring-boot:1.9" />
+          <element id="library" level="project" name="Maven: org.jruby:jrubyparser:0.5.3" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-test:1.5.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-test:1.5.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-test-autoconfigure:1.5.1.RELEASE" />
