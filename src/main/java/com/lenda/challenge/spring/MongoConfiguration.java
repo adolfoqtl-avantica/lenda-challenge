@@ -1,23 +1,15 @@
 package com.lenda.challenge.spring;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.mongodb.DBRef;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import org.bson.BsonType;
-import org.bson.Document;
-import org.bson.Transformer;
-import org.bson.codecs.BsonTypeClassMap;
-import org.bson.codecs.DocumentCodecProvider;
-import org.bson.codecs.configuration.CodecRegistries;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.mongodb.core.convert.CustomConversions;
 
-import java.time.Instant;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Map;
@@ -29,26 +21,36 @@ import static java.time.ZonedDateTime.ofInstant;
 public class MongoConfiguration {
 
     @Bean
-    public MongoClientOptions provideMongoClientOptions() {
-        Map<BsonType, Class<?>> replacements = Maps.newHashMap();
-        replacements.put(BsonType.DATE_TIME, Instant.class);
-        BsonTypeClassMap bsonTypeClassMap = new BsonTypeClassMap(replacements);
-        return MongoClientOptions.builder()
-                .codecRegistry(CodecRegistries.fromRegistries(
-                        CodecRegistries.fromProviders(new DocumentCodecProvider(bsonTypeClassMap, new DocumentToDBRefTransformer())),
-                        MongoClient.getDefaultCodecRegistry()))
-                .build();
-    }
-
-    @Bean
     public CustomConversions provideCustomConversions() {
         return new CustomConversions(Lists.newArrayList(
                 DateToZonedDateTimeConverter.INSTANCE,
                 ZonedDateTimeToDateConverter.INSTANCE,
-                MapToOffsetDateTimeConverter.INSTANCE));
+                MapToOffsetDateTimeConverter.INSTANCE,
+                OffsetDateTimeToDateConverter.INSTANCE,
+                DateToOffsetDateTimeConverter.INSTANCE));
     }
 
-    public enum DateToZonedDateTimeConverter implements Converter<Date, ZonedDateTime> {
+    private enum DateToOffsetDateTimeConverter implements Converter<Date, OffsetDateTime> {
+
+        INSTANCE;
+
+        @Override
+        public OffsetDateTime convert(Date source) {
+            return source == null ? null : OffsetDateTime.ofInstant(source.toInstant(), systemDefault());
+        }
+    }
+
+    private enum OffsetDateTimeToDateConverter implements Converter<OffsetDateTime, Date> {
+
+        INSTANCE;
+
+        @Override
+        public Date convert(OffsetDateTime source) {
+            return source == null ? null : Date.from(source.toInstant());
+        }
+    }
+
+    private enum DateToZonedDateTimeConverter implements Converter<Date, ZonedDateTime> {
 
         INSTANCE;
 
@@ -58,7 +60,7 @@ public class MongoConfiguration {
         }
     }
 
-    public enum ZonedDateTimeToDateConverter implements Converter<ZonedDateTime, Date> {
+    private enum ZonedDateTimeToDateConverter implements Converter<ZonedDateTime, Date> {
 
         INSTANCE;
 
@@ -68,38 +70,19 @@ public class MongoConfiguration {
         }
     }
 
-    public enum MapToOffsetDateTimeConverter implements Converter<Map<String, String>, OffsetDateTime> {
+    private enum MapToOffsetDateTimeConverter implements Converter<Map<String, String>, OffsetDateTime> {
 
         INSTANCE;
 
         @Override
         public OffsetDateTime convert(Map<String, String> source) {
-            return source == null ? null : OffsetDateTime.from(new Date(source.get("timestamp")).toInstant());
-        }
-    }
-
-    public static class DocumentToDBRefTransformer implements Transformer {
-
-        DocumentToDBRefTransformer() {
-        }
-
-        public Object transform(Object value) {
-            if(value instanceof Document) {
-                Document document = (Document)value;
-                if(document.containsKey("$id") && document.containsKey("$ref")) {
-                    return new DBRef((String)document.get("$db"), (String)document.get("$ref"), document.get("$id"));
-                }
+            try {
+                return source == null ? null : OffsetDateTime.ofInstant(
+                        new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").parse(source.get("datetime")).toInstant(),
+                        ZoneOffset.ofHours(Integer.valueOf(source.get("offset"))));
+            } catch (ParseException e) {
+                return null;
             }
-
-            return value;
-        }
-
-        public boolean equals(Object o) {
-            return this == o?true:o != null && this.getClass() == o.getClass();
-        }
-
-        public int hashCode() {
-            return 0;
         }
     }
 }

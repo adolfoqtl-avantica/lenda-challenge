@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class GameService {
 		GameLog gameLog = new GameLog();
         gameLog.setUser(user);
 		gameLog.setGameId(game.getId());
-		gameLog.setGameTimestamp(LocalDateTime.now());
+		gameLog.setGameTimestamp(OffsetDateTime.now());
 		gameLog = gameLogRepository.save(gameLog);
 
 		return game;

@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Document
 public class GameLog extends DocumentBase {
@@ -11,7 +12,7 @@ public class GameLog extends DocumentBase {
     @DBRef(lazy = true)
     private User user;
     private Long gameId;
-    private LocalDateTime gameTimestamp;
+    private OffsetDateTime gameTimestamp;
 
     public User getUser() {
         return user;
@@ -29,11 +30,11 @@ public class GameLog extends DocumentBase {
         this.gameId = gameId;
     }
 
-    public LocalDateTime getGameTimestamp() {
+    public OffsetDateTime getGameTimestamp() {
         return gameTimestamp;
     }
 
-    public void setGameTimestamp(LocalDateTime gameTimestamp) {
+    public void setGameTimestamp(OffsetDateTime gameTimestamp) {
         this.gameTimestamp = gameTimestamp;
     }
 }

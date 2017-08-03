@@ -12,6 +12,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.time.OffsetDateTime;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @BackEndIntegrationTest
 public class GameIntegrationTest {
@@ -34,5 +36,7 @@ public class GameIntegrationTest {
         GameLog gameLog = gameLogRepository.findByGameId(readGame.getId());
         Assert.assertEquals(game.getId(), gameLog.getGameId());
         Assert.assertEquals("Test", gameLog.getUser().getFirstName());
+        Assert.assertEquals(OffsetDateTime.now().toLocalDate(), gameLog.getGameTimestamp().toLocalDate());
+        Assert.assertEquals(OffsetDateTime.now().toLocalTime().getHour(), gameLog.getGameTimestamp().toLocalTime().getHour());
     }
 }
