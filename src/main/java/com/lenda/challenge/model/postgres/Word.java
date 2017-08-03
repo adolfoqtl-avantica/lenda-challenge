@@ -1,7 +1,6 @@
-package com.lenda.challenge.model;
+package com.lenda.challenge.model.postgres;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lenda.challenge.spring.EntityBase;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.Entity;

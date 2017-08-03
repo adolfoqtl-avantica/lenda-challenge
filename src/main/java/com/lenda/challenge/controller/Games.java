@@ -1,7 +1,7 @@
 package com.lenda.challenge.controller;
 
-import com.lenda.challenge.model.Game;
-import com.lenda.challenge.model.Word;
+import com.lenda.challenge.model.postgres.Game;
+import com.lenda.challenge.model.postgres.Word;
 import com.lenda.challenge.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

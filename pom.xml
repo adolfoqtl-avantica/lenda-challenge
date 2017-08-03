@@ -43,6 +43,7 @@
         <h2.version>1.4.193</h2.version>
         <mockito-java8.version>0.3.1</mockito-java8.version>
         <flyway-spring-test.version>4.0.1</flyway-spring-test.version>
+        <de.flapdoodle.embed.mongo.version>1.50.2</de.flapdoodle.embed.mongo.version>
     </properties>
 
     <dependencies>
@@ -212,6 +213,12 @@
             <groupId>info.solidsoft.mockito</groupId>
             <artifactId>mockito-java8</artifactId>
             <version>${mockito-java8.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>${de.flapdoodle.embed.mongo.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

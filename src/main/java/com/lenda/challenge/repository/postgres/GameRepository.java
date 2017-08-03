@@ -1,6 +1,6 @@
 package com.lenda.challenge.repository.postgres;
 
-import com.lenda.challenge.model.Game;
+import com.lenda.challenge.model.postgres.Game;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

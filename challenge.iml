@@ -162,5 +162,11 @@
     <orderEntry type="library" scope="TEST" name="Maven: commons-pool:commons-pool:1.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: info.solidsoft.mockito:mockito-java8:0.3.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.jodah:typetools:0.4.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: de.flapdoodle.embed:de.flapdoodle.embed.process:1.50.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: commons-io:commons-io:2.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.java.dev.jna:jna:4.2.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.java.dev.jna:jna-platform:4.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.commons:commons-compress:1.3" level="project" />
   </component>
 </module>

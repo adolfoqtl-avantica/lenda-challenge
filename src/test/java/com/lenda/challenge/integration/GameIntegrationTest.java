@@ -1,9 +1,12 @@
 package com.lenda.challenge.integration;
 
-import com.lenda.challenge.spring.BackEndIntegrationTest;
+import com.lenda.challenge.model.mongo.GameLog;
+import com.lenda.challenge.model.postgres.Game;
+import com.lenda.challenge.repository.mongo.GameLogRepository;
 import com.lenda.challenge.service.GameService;
+import com.lenda.challenge.spring.BackEndIntegrationTest;
 import org.flywaydb.test.annotation.FlywayTest;
-import org.junit.Before;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +19,20 @@ public class GameIntegrationTest {
     @Autowired
     private GameService gameService;
 
-    @Before
-    public void init() throws Exception {
-
-    }
+    @Autowired
+    private GameLogRepository gameLogRepository;
 
     @Test
     @FlywayTest
     public void testGameService() {
 
+        Game game = gameService.create();
+
+        Game readGame = gameService.get(game.getId());
+        Assert.assertEquals(game.getId(), readGame.getId());
+
+        GameLog gameLog = gameLogRepository.findByGameId(readGame.getId());
+        Assert.assertEquals(game.getId(), gameLog.getGameId());
+        Assert.assertEquals("Test", gameLog.getUser().getFirstName());
     }
 }

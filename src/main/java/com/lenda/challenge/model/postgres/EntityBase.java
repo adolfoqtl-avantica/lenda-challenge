@@ -1,6 +1,7 @@
-package com.lenda.challenge.spring;
+package com.lenda.challenge.model.postgres;
 
 import org.assertj.core.data.Offset;
+import org.hibernate.envers.Audited;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -19,6 +20,7 @@ import java.time.OffsetDateTime;
  */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Audited
 public abstract class EntityBase {
 
     private Long id;

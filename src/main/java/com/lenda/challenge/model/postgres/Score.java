@@ -1,4 +1,4 @@
-package com.lenda.challenge.model;
+package com.lenda.challenge.model.postgres;
 
 import java.time.OffsetDateTime;
 

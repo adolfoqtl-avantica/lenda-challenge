@@ -19,11 +19,16 @@
                 parameters = {
                         @Parameter(name = "encryptorRegisteredName", value = "HibernateStringEncryptor")
                 }
+        ),
+        @TypeDef(
+                name = "JsonB",
+                typeClass = JsonBType.class
         )
 })
 
-package com.lenda.challenge.model;
+package com.lenda.challenge.model.postgres;
 
+import com.lenda.challenge.hibernate.JsonBType;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;

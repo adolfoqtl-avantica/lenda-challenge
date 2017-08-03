@@ -1,6 +1,6 @@
 package com.lenda.challenge.controller;
 
-import com.lenda.challenge.model.Score;
+import com.lenda.challenge.model.postgres.Score;
 import com.lenda.challenge.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

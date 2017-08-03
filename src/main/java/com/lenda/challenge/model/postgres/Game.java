@@ -1,11 +1,12 @@
-package com.lenda.challenge.model;
+package com.lenda.challenge.model.postgres;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
-import com.lenda.challenge.spring.EntityBase;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -52,12 +53,13 @@ public class Game extends EntityBase {
 	};
 
 	private Integer score;
-	private List<String> board;
+	private BoardWords boardWords;
 	private List<Word> words;
 	private OffsetDateTime lastPlay;
 
 	public Game() {
-		this.board = Lists.newArrayList();
+	    this.boardWords = new BoardWords();
+	    this.boardWords.setWords(Lists.newArrayList());
 		this.words = Lists.newArrayList();
 		this.score = 0;
 		scrambleBoard();
@@ -72,7 +74,7 @@ public class Game extends EntityBase {
 			for (int j = 0; j < 5; j++) {
 				row.append(dice.remove(r.nextInt(dice.size())).charAt(r.nextInt(6)));
 			}
-			board.add(row.toString().toUpperCase());
+			boardWords.getWords().add(row.toString().toUpperCase());
 		}
 	}
 	
@@ -89,9 +91,9 @@ public class Game extends EntityBase {
 		word = word.toUpperCase().replaceAll("QU", "Q");
 		ArrayList<Position> paths = new ArrayList<>();
 		// search for beginning positions
-		for (int i = 0; i < board.size(); i++) {
+		for (int i = 0; i < boardWords.getWords().size(); i++) {
 			int j = -1;
-			while ( (j=board.get(i).indexOf(word.charAt(0),j+1)) >= 0)
+			while ( (j=boardWords.getWords().get(i).indexOf(word.charAt(0),j+1)) >= 0)
 				paths.add(new Position(j,i));
 		}
 		for (int i = 1; i < word.length() && !paths.isEmpty(); i++) {
@@ -129,13 +131,26 @@ public class Game extends EntityBase {
 		this.score = score;
 	}
 
-	@Transient
+    @Type(type = "JsonB")
+    @JsonIgnore
+    public BoardWords getBoardWords() {
+        return boardWords;
+    }
+
+    public void setBoardWords(BoardWords boardWords) {
+        this.boardWords = boardWords;
+    }
+
+    @Transient
 	public List<String> getBoard() {
-		return board;
+		return boardWords != null ? boardWords.getWords() : null;
 	}
 
 	public void setBoard(List<String> board) {
-		this.board = board;
+		if (boardWords == null) {
+		    boardWords = new BoardWords();
+        }
+        boardWords.setWords(board);
 	}
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "game")
@@ -184,7 +199,7 @@ public class Game extends EntityBase {
 		}
 
 		char charAt() {
-			return Game.this.board.get(y).charAt(x);
+			return Game.this.boardWords.getWords().get(y).charAt(x);
 		}
 
 		List<Position> findPaths(char c) {
