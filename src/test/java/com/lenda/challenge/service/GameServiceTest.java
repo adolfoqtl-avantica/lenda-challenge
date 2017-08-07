@@ -1,6 +1,8 @@
 package com.lenda.challenge.service;
 
 import com.lenda.challenge.model.postgres.Game;
+import com.lenda.challenge.repository.mongo.GameLogRepository;
+import com.lenda.challenge.repository.mongo.UserRepository;
 import com.lenda.challenge.repository.postgres.GameRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,6 +22,12 @@ public class GameServiceTest {
 
     @Mock
     private GameRepository gameRepositoryMock;
+
+    @Mock
+    private UserRepository userRepositoryMock;
+
+    @Mock
+    private GameLogRepository gameLogRepositoryMock;
 
     @InjectMocks
     private GameService gameService;

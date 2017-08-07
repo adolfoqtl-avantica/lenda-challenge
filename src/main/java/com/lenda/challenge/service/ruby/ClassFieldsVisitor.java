@@ -27,14 +27,12 @@ class ClassFieldsVisitor extends BaseVisitor<RubyModelFieldDef> {
                 Node nodeDef = fCallNode.childNodes().get(0);
                 String fieldName = GetFieldNameVisitor.getFieldName(nodeDef);
                 String fieldType = GetFieldTypeVisitor.getFieldType(nodeDef);
-                Boolean isRef = fCallNode.getName().equals("has_one") || fCallNode.getName().equals("has_many");
+                Boolean isRef = fCallNode.getName().equals("has_one") || fCallNode.getName().equals("has_many") || fCallNode.getName().equals("embedded_in");
                 visitNodeItems(fCallNode, new RubyModelFieldDef(fieldName, fieldType, isRef));
             } else if (fCallNode.getName() != null && fCallNode.getName().equals("include")) {
                 Node nodeDef = fCallNode.childNodes().get(0);
                 String moduleImport = GetIncludeVisitor.getImportModule(nodeDef);
-                if (moduleImport != null && moduleImport.equals("Mongoid::Document")) {
-                    visitNodeItems(fCallNode, new RubyModelFieldDef("created_by", "String", false), new RubyModelFieldDef("modified_by", "String", false));
-                } else if (moduleImport != null && moduleImport.equals("Mongoid::Timestamps::Short")) {
+                if (moduleImport != null && moduleImport.equals("Mongoid::Timestamps::Short")) {
                     visitNodeItems(fCallNode, new RubyModelFieldDef("c_at", "Time", false), new RubyModelFieldDef("u_at", "Time", false));
                 } else {
                     visitNodeItems(fCallNode, (RubyModelFieldDef) null);
@@ -43,7 +41,7 @@ class ClassFieldsVisitor extends BaseVisitor<RubyModelFieldDef> {
                 visitNodeItems(fCallNode, (RubyModelFieldDef) null);
             }
         } catch (Exception e) {
-            System.out.println(fCallNode.toString());
+            // Skip
         }
         return null;
     }

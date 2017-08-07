@@ -1,6 +1,7 @@
 package com.lenda.challenge.spring;
 
 import com.google.common.collect.Lists;
+import com.mongodb.BasicDBObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -25,7 +26,7 @@ public class MongoConfiguration {
         return new CustomConversions(Lists.newArrayList(
                 DateToZonedDateTimeConverter.INSTANCE,
                 ZonedDateTimeToDateConverter.INSTANCE,
-                MapToOffsetDateTimeConverter.INSTANCE,
+                BasicDBObjectToOffsetDateTimeConverter.INSTANCE,
                 OffsetDateTimeToDateConverter.INSTANCE,
                 DateToOffsetDateTimeConverter.INSTANCE));
     }
@@ -70,19 +71,14 @@ public class MongoConfiguration {
         }
     }
 
-    private enum MapToOffsetDateTimeConverter implements Converter<Map<String, String>, OffsetDateTime> {
+    private enum BasicDBObjectToOffsetDateTimeConverter implements Converter<BasicDBObject, OffsetDateTime> {
 
         INSTANCE;
 
         @Override
-        public OffsetDateTime convert(Map<String, String> source) {
-            try {
-                return source == null ? null : OffsetDateTime.ofInstant(
-                        new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy").parse(source.get("datetime")).toInstant(),
-                        ZoneOffset.ofHours(Integer.valueOf(source.get("offset"))));
-            } catch (ParseException e) {
-                return null;
-            }
+        public OffsetDateTime convert(BasicDBObject source) {
+            return source == null ? null : OffsetDateTime.ofInstant(Date.class.cast(source.get("dateTime")).toInstant(),
+                    ZoneOffset.ofHours(Integer.valueOf(String.class.cast(source.get("offset")).substring(0, String.class.cast(source.get("offset")).indexOf(":")))));
         }
     }
 }

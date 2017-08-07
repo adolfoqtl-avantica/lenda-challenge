@@ -21,7 +21,7 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
 @SpringBootTest
 @ActiveProfiles(value = "local")
 @TestExecutionListeners(
-        listeners = {FlywayTestExecutionListener.class},
+        listeners = {FlywayTestExecutionListener.class, MongoIntegrationTestExecutionListener.class},
         mergeMode = MERGE_WITH_DEFAULTS
 )
 public @interface BackEndIntegrationTest {

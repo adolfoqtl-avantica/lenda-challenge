@@ -2,8 +2,8 @@ package com.lenda.challenge.service.ruby;
 
 import org.jrubyparser.CompatVersion;
 import org.jrubyparser.Parser;
-import org.jrubyparser.ast.Node;
 import org.jrubyparser.parser.ParserConfiguration;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,8 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.io.InputStreamReader;
-import java.util.List;
+import java.io.IOException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RubyParsingServiceTest {
@@ -26,20 +25,16 @@ public class RubyParsingServiceTest {
     @InjectMocks
     private RubyParsingService rubyParsingService;
 
-    private InputStreamReader accountReader;
-
     @Before
     public void init() {
-        accountReader = new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("ruby/account.rb"));
+
     }
 
     @Test
-    public void test_ParseRuby() {
-        Node node = rubyParsingService.parseRuby(accountReader);
+    public void test_ParseRuby() throws IOException, ClassNotFoundException {
+        RubyModelClassDef rubyModelClassDef = rubyParsingService.parseRubyModel("com.lenda.challenge.model.mongo","ruby/account.rb");
 
-        List<RubyModelFieldDef> rubyModelFieldDefs = ClassFieldsVisitor.findClassFields(node);
-        for (RubyModelFieldDef rubyModelFieldDef : rubyModelFieldDefs) {
-            System.out.println(String.format("%s %s %s", rubyModelFieldDef.getFieldType(), rubyModelFieldDef.getFieldName(), rubyModelFieldDef.getRef()));
-        }
+        Assert.assertEquals("Account", rubyModelClassDef.getClassName());
+        Assert.assertEquals("email", rubyModelClassDef.getFields().get(2).getFieldName());
     }
 }
