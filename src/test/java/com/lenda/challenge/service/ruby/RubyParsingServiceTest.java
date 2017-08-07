@@ -32,7 +32,7 @@ public class RubyParsingServiceTest {
 
     @Test
     public void test_ParseRuby() throws IOException, ClassNotFoundException {
-        RubyModelClassDef rubyModelClassDef = rubyParsingService.parseRubyModel("com.lenda.challenge.model.mongo","ruby/account.rb");
+        RubyModelClassDef rubyModelClassDef = rubyParsingService.parseRubyClassModel("com.lenda.challenge.model.mongo","ruby/account.rb");
 
         Assert.assertEquals("Account", rubyModelClassDef.getClassName());
         Assert.assertEquals("email", rubyModelClassDef.getFields().get(2).getFieldName());

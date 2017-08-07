@@ -32,11 +32,11 @@ public class RubyModelClassDef {
         return false;
     }
 
-    public Set<Class<?>> getFieldJavaImports(Map<String, String> rubyJavaMappings) throws ClassNotFoundException {
+    public Set<Class<?>> getFieldJavaImports(Map<String, Class<?>> rubyJavaMappings) throws ClassNotFoundException {
         Set<Class<?>> fieldImports = Sets.newHashSet();
         for (RubyModelFieldDef field : fields) {
             if (rubyJavaMappings.get(field.getFieldType()) != null) {
-                fieldImports.add(Class.forName(rubyJavaMappings.get(field.getFieldType())));
+                fieldImports.add(rubyJavaMappings.get(field.getFieldType()));
                 continue;
             }
             if (field.getFieldType().startsWith("List")) {

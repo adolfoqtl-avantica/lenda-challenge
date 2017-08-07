@@ -42,6 +42,8 @@ public class JavaWriter implements Appendable {
 
     private static final String PUBLIC_CLASS = "public class ";
 
+    private static final String PUBLIC_ENUM = "public enum ";
+
     private static final String PUBLIC_FINAL = "public final ";
 
     private static final String PUBLIC_INTERFACE = "public interface ";
@@ -160,6 +162,17 @@ public class JavaWriter implements Appendable {
         if (type.contains("<")){
             type = type.substring(0, type.indexOf('<'));
         }
+        return this;
+    }
+
+    public JavaWriter beginEnum(String simpleName, String... interfaces) throws IOException{
+        append(indent + PUBLIC_ENUM + simpleName);
+        if (interfaces.length > 0){
+            append(IMPLEMENTS);//.join(COMMA, interfaces);
+            append(Joiner.on(COMMA).join(interfaces));
+        }
+        append(" {").nl().nl();
+        goIn();
         return this;
     }
 

@@ -14,7 +14,7 @@ class GetFieldTypeVisitor extends BaseVisitor<String> {
         GetFieldTypeVisitor visitor = new GetFieldTypeVisitor();
         node.accept(visitor);
         String fieldType = visitor.getFirstItem(null);
-        if (fieldType == null) {
+        if (fieldType == null || fieldType.equals("Array")) {
             String fieldName = GetFieldNameVisitor.getFieldName(node);
             String fieldClassName = WordUtils.capitalizeFully(fieldName.endsWith("s") ? fieldName.substring(0, fieldName.length() - 1) : fieldName, '_').replaceAll("_", "");
             fieldType = String.format(fieldName.endsWith("s") ? "List<%s>" : "%s", fieldClassName);

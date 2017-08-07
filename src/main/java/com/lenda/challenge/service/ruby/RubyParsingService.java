@@ -23,11 +23,14 @@ public class RubyParsingService {
     @Autowired
     private ParserConfiguration rubyParserConfiguration;
 
-    public RubyModelClassDef parseRubyModel(String packageName, String modelFilePath) throws FileNotFoundException {
-        InputStream modelFileResourceStream = this.getClass().getClassLoader().getResourceAsStream(modelFilePath);
-        Node node = parseRuby(modelFileResourceStream != null
-                ? new InputStreamReader(modelFileResourceStream) : new FileReader(new File(modelFilePath)));
-        return new RubyModelClassDef(packageName, GetClassNameVisitor.getClassName(node), ClassFieldsVisitor.findClassFields(node));
+    public RubyModelClassDef parseRubyClassModel(String packageName, String rubyFilePath) throws FileNotFoundException {
+        Node node = parseRuby(getRubySourceReader(rubyFilePath));
+        return new RubyModelClassDef(packageName, GetClassNameVisitor.getClassName(node), GetClassFieldsVisitor.findClassFields(node));
+    }
+
+    public RubyEnumDef parseRubyEnum(String packageName, String rubyFilePath) throws FileNotFoundException {
+        Node node = parseRuby(getRubySourceReader(rubyFilePath));
+        return new RubyEnumDef(packageName, GetEnumNameVisitor.getEnumName(node), GetEnumConstantsVisitor.findEnumConstants(node.childNodes().get(0)));
     }
 
     private Node parseRuby(String content) {
@@ -36,6 +39,13 @@ public class RubyParsingService {
 
     private Node parseRuby(Reader reader) {
         return rubyParser.parse("<code>", reader, rubyParserConfiguration);
+    }
+
+    private Reader getRubySourceReader(String rubyFilePath) throws FileNotFoundException {
+        InputStream rubyFileResourceStream = this.getClass().getClassLoader().getResourceAsStream(rubyFilePath);
+        return rubyFileResourceStream != null
+                ? new InputStreamReader(rubyFileResourceStream)
+                : new FileReader(new File(rubyFilePath));
     }
 
     public void setRubyParser(Parser rubyParser) {

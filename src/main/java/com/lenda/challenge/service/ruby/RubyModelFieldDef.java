@@ -1,12 +1,6 @@
 package com.lenda.challenge.service.ruby;
 
-import com.google.common.collect.Lists;
-
-import java.util.List;
-
 public class RubyModelFieldDef {
-
-    final static List<String> VALID_FIELD_DEFS = Lists.newArrayList("field", "embeds_one", "embeds_many", "has_one", "has_many", "embedded_in");
 
     private String fieldName;
     private String fieldType;

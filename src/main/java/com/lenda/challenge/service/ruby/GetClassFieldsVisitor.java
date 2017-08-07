@@ -1,17 +1,24 @@
 package com.lenda.challenge.service.ruby;
 
+import com.google.common.collect.Sets;
 import org.jrubyparser.ast.FCallNode;
 import org.jrubyparser.ast.Node;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Parses a Ruby class fields.
  */
-class ClassFieldsVisitor extends BaseVisitor<RubyModelFieldDef> {
+class GetClassFieldsVisitor extends BaseVisitor<RubyModelFieldDef> {
+
+    private final static Set<String> VALID_FIELD_DEFS = Sets.newHashSet("field", "embeds_one", "embeds_many",
+            "has_one", "has_many", "embedded_in", "belongs_to");
+
+    private final static Set<String> FIELD_DEFS_REF = Sets.newHashSet("has_one", "has_many", "embedded_in", "belongs_to");
 
     static List<RubyModelFieldDef> findClassFields(Node rootNode) {
-        ClassFieldsVisitor visitor = new ClassFieldsVisitor();
+        GetClassFieldsVisitor visitor = new GetClassFieldsVisitor();
         rootNode.accept(visitor);
         return visitor.getItems();
     }
@@ -23,11 +30,11 @@ class ClassFieldsVisitor extends BaseVisitor<RubyModelFieldDef> {
 
         // (NewlineNode, (FCallNode:field, (ArrayNode, (SymbolNode:email), (HashNode, (ArrayNode, (SymbolNode:type), (ConstNode:String), (SymbolNode:default), (StrNode)))))),
         try {
-            if (fCallNode.getName() != null && RubyModelFieldDef.VALID_FIELD_DEFS.contains(fCallNode.getName())) {
+            if (fCallNode.getName() != null && VALID_FIELD_DEFS.contains(fCallNode.getName())) {
                 Node nodeDef = fCallNode.childNodes().get(0);
                 String fieldName = GetFieldNameVisitor.getFieldName(nodeDef);
                 String fieldType = GetFieldTypeVisitor.getFieldType(nodeDef);
-                Boolean isRef = fCallNode.getName().equals("has_one") || fCallNode.getName().equals("has_many") || fCallNode.getName().equals("embedded_in");
+                Boolean isRef = FIELD_DEFS_REF.contains(fCallNode.getName());
                 visitNodeItems(fCallNode, new RubyModelFieldDef(fieldName, fieldType, isRef));
             } else if (fCallNode.getName() != null && fCallNode.getName().equals("include")) {
                 Node nodeDef = fCallNode.childNodes().get(0);
