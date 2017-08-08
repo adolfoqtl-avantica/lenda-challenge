@@ -40,6 +40,6 @@ public class JavaMongoModelGenerator {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         JavaMongoModelGenerator generator = new JavaMongoModelGenerator();
-        generator.generate();
+        //generator.generate();
     }
 }
